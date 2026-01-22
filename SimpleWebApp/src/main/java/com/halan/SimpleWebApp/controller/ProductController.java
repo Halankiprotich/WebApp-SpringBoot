@@ -19,14 +19,23 @@ public class ProductController {
         return service.getProducts();
 
     }
-    @GetMapping("/products/{proId}")
-    public product getProductById(@PathVariable int proId){
-        return service.getProductById(proId);
+    @GetMapping("/products/{prodId}")
+    public product getProductById(@PathVariable int prodId){
+        return service.getProductById(prodId);
     }
 
     @PostMapping("/products")
     public void addProduct(@RequestBody product prod){
         System.out.println(prod);
         service.addProduct(prod);
+    }
+    @PutMapping("/products")
+    public void updateProduct(@RequestBody product prod)
+    {
+        service.updateProduct(prod);
+    }
+    @DeleteMapping("/products/{prodId}")
+    public void deleteProduct(@PathVariable int prodId){
+        service.deleteProduct(prodId);
     }
 }
