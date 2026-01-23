@@ -2,6 +2,8 @@ package com.halan.SimpleWebApp.service;
 
 
 import com.halan.SimpleWebApp.model.product;
+import com.halan.SimpleWebApp.repository.ProductRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -11,39 +13,33 @@ import java.util.List;
 @Service
 public class ProductService {
 
-    List<product>  products= new ArrayList<>(Arrays.asList(
-            new product (101,"iphone",8000),
-            new product(102,"samsung", 5000),
-            new product(103,"Tecno", 6777)));
+    @Autowired
+    ProductRepo repo;
+
+
+//    List<product>  products= new ArrayList<>(Arrays.asList(
+ //           new product (101,"iphone",8000),
+ //           new product(102,"samsung", 5000),
+//new product(103,"Tecno", 6777)));
 
     public List<product> getProducts(){
-        return products;
+        return repo.findAll();
     }
 
-    public product getProductById(int proId) {
+    public product getProductById(int prodId) {
 
-        return products.stream()
-                .filter(product -> product.getProdId() == proId)
-                .findFirst().orElse(new product (100,"No Item", 0));
+        return repo.findById(prodId).orElse(new product());
     }
 
     public void addProduct(product prod){
-        products.add(prod);
+        repo.save(prod);
     }
 
     public void updateProduct(product prod) {
-        int index=0;
-        for(int i=0;i<products.size();i++)
-            if(products.get(i).getProdId()==prod.getProdId())
-                index=i;
-        products.set(index,prod);
+       repo.save(prod);
     }
 
     public void deleteProduct(int prodId) {
-        int index=0;
-        for(int i=0;i<products.size();i++)
-            if(products.get(i).getProdId()==prodId)
-                index=i;
-        products.remove(index);
+        repo.deleteById(prodId);
     }
 }
